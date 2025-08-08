@@ -1,0 +1,5 @@
+# Check if Go bin is in your PATH
+echo $PATH | grep -q "$(go env GOPATH)/bin" && echo "Already in PATH" || echo "Not in PATH"
+
+# Add it to your PATH if needed (add this to your .bashrc, .zshrc, etc.)
+export PATH="$PATH:$(go env GOPATH)/bin"mentation
