@@ -43,6 +43,14 @@ func (l *List) Complete(index int) error {
 	return nil
 }
 
+func (l *List) Delete(index int) error {
+	if index < 0 || index >= len(l.Items) {
+		return errors.New("item index out of range")
+	}
+	l.Items = append(l.Items[:index], l.Items[index+1:]...)
+	return nil
+}
+
 func (l *List) Save(filename string) error {
 	data, err := json.Marshal(l)
 	if err != nil {

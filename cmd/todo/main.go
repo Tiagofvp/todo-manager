@@ -44,7 +44,6 @@ func main() {
 	}
 
 	if len(args) == 0 {
-		// Default action: print the todo list
 		fmt.Println(todoList)
 		return
 	}
@@ -88,6 +87,22 @@ func main() {
 
 		fmt.Println("Marked item as completed")
 
+	case "delete":
+		if len(args) < 2 {
+			fmt.Println("Error: missing item number")
+		}
+		num, err := strconv.Atoi(args[1])
+		if err != nil {
+			fmt.Println("Error: invalid item number:", args[1])
+			os.Exit(1)
+		}
+
+		if err := todoList.Delete(num - 1); err != nil {
+			fmt.Fprintln(os.Stderr, "Error deleting todo:", err)
+			os.Exit(1)
+		}
+		saveTodos(todoList)
+		fmt.Println("Deleted To-Do", num)
 	case "help":
 		printHelp()
 
