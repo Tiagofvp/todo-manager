@@ -129,20 +129,15 @@ Usage:
   todo [flags]
 
 Commands:
-  add <text>     Add a new todo item
-  list           List all todo items
-  complete <n>   Mark item n as completed
-  help           Show this help message
+  add <text>     	Add a new todo item
+  list           	List all todo items
+  complete <number>   	Mark item n as completed
+  delete <number>	Delete an item 
+  help           	Show this help message
 
 Flags:
-  -h             Show this help message
-  -i             Run in interactive mode
-
-Examples:
-  todo add "Learn Go testing"
-  todo list
-  todo complete 2
-  todo -i
+  -h             	Show this help message
+  -i             	Run in interactive mode
 `
 	fmt.Println(helpText)
 }
@@ -151,59 +146,95 @@ func runInteractive(list *todo.List) {
 	scanner := bufio.NewScanner(os.Stdin)
 
 	for {
-		fmt.Println("\n" + list.String())
-		fmt.Println("\nFor Informations about the interactive mode:")
-		fmt.Println("  help          - Show this help message")
-		fmt.Print("\n> ")
 
-		if !scanner.Scan() {
-			break
-		}
+		fmt.Print("\n ________         _______                     __        __              __     \n" +
+			"/        |       /       \\                   /  |      /  |            /  |    \n" +
+			"$$$$$$$$/______  $$$$$$$  |  ______          $$ |      $$/   _______  _$$ |_   \n" +
+			"   $$ | /      \\ $$ |  $$ | /      \\  ______ $$ |      /  | /       |/ $$   |  \n" +
+			"   $$ |/$$$$$$  |$$ |  $$ |/$$$$$$  |/      |$$ |      $$ |/$$$$$$$/ $$$$$$/   \n" +
+			"   $$ |$$ |  $$ |$$ |  $$ |$$ |  $$ |$$$$$$/ $$ |      $$ |$$      \\   $$ | __ \n" +
+			"   $$ |$$ \\__$$ |$$ |__$$ |$$ \\__$$ |        $$ |_____ $$ | $$$$$$  |  $$ |/  |\n" +
+			"   $$ |$$    $$/ $$    $$/ $$    $$/         $$       |$$ |/     $$/   $$  $$/ \n" +
+			"   $$/  $$$$$$/  $$$$$$$/   $$$$$$/          $$$$$$$$/ $$/ $$$$$$$/     $$$$/  \n" +
+			"                                                                               \n")
+		fmt.Println("\nThis is the interactive mode of the ToDo-List-Manager")
+		fmt.Println("\nUse following commands:")
+		fmt.Println("  list 				- List all items")
+		fmt.Println("  add [text]			- Add an item")
+		fmt.Println("  complete [number]		- Set an item to completed")
+		fmt.Println("  delete [number]		- Delete an item")
+		fmt.Println("  help				- Show this help message")
+		fmt.Println("  quit/exit			- Exit interactive mode")
+		fmt.Println("\n\n", list)
 
-		input := scanner.Text()
-		parts := strings.SplitN(input, " ", 2)
-		cmd := parts[0]
+		for {
+			fmt.Print("\n> ")
 
-		switch cmd {
-		case "add":
-			if len(parts) < 2 {
-				fmt.Println("Error: missing todo text")
-				continue
+			if !scanner.Scan() {
+				break
 			}
-			list.Add(parts[1])
-			saveTodos(list)
-			fmt.Println("Added:", parts[1])
 
-		case "complete":
-			if len(parts) < 2 {
-				fmt.Println("Error: missing item number")
-				continue
+			input := scanner.Text()
+			parts := strings.SplitN(input, " ", 2)
+			cmd := parts[0]
+
+			switch cmd {
+			case "add":
+				if len(parts) < 2 {
+					fmt.Println("Error: missing todo text")
+					continue
+				}
+				list.Add(parts[1])
+				saveTodos(list)
+				fmt.Println("Added:", parts[1])
+			case "list":
+				fmt.Println(list)
+			case "complete":
+				if len(parts) < 2 {
+					fmt.Println("Error: missing item number")
+					continue
+				}
+				num, err := strconv.Atoi(parts[1])
+				if err != nil {
+					fmt.Println("Error: invalid item number")
+					continue
+				}
+				if err := list.Complete(num - 1); err != nil {
+					fmt.Println("Error:", err)
+					continue
+				}
+				saveTodos(list)
+				fmt.Println("Marked item as completed")
+			case "delete":
+				if len(parts) < 2 {
+					fmt.Println("Error: missing item number")
+					continue
+				}
+				num, err := strconv.Atoi(parts[1])
+				if err != nil {
+					fmt.Println("Error: invalid item number")
+					continue
+				}
+				if err := list.Delete(num - 1); err != nil {
+					fmt.Println("Error:", err)
+					continue
+				}
+				saveTodos(list)
+				fmt.Println("Deleted item", num)
+			case "quit", "exit":
+				return
+			case "help":
+				fmt.Println("\nAvailable commands:")
+				fmt.Println("  add <text>			- Add a new todo")
+				fmt.Println("  list				- List all todos")
+				fmt.Println("  complete <number>		- Mark item <n> as completed")
+				fmt.Println("  delete <number>		- Delete item <n> from ToDo-List")
+				fmt.Println("  help				- Show this help message")
+				fmt.Println("  quit/exit			- Exit the program")
+			default:
+				fmt.Println("Unknown command:", cmd)
+				fmt.Println("Type 'help' for available commands")
 			}
-			num, err := strconv.Atoi(parts[1])
-			if err != nil {
-				fmt.Println("Error: invalid item number")
-				continue
-			}
-			if err := list.Complete(num - 1); err != nil {
-				fmt.Println("Error:", err)
-				continue
-			}
-			saveTodos(list)
-			fmt.Println("Marked item as completed")
-
-		case "quit", "exit":
-			return
-
-		case "help":
-			fmt.Println("\nAvailable commands:")
-			fmt.Println("  add <text>    - Add a new todo")
-			fmt.Println("  list          - List all todos")
-			fmt.Println("  complete <number>  - Mark item <n> as completed")
-			fmt.Println("  help          - Show this help message")
-			fmt.Println("  quit          - Exit the program")
-
-		default:
-			fmt.Println("Unknown command:", cmd)
 		}
 	}
 }
