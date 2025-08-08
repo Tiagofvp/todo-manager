@@ -1,7 +1,7 @@
 # To-Do Manager - CLI Task Management
 
 ![Go Version](https://img.shields.io/badge/go-%3E%3D1.22-blue.svg)
-![Version](https://img.shields.io/badge/CLI&nbsp;Version-0.5-blue.svg)
+![Version](https://img.shields.io/badge/CLI&nbsp;Version-1.0-blue.svg)
 ---
 
 A lightweight, fast command-line task manager written in Go for efficient to-do list management right from your terminal.
