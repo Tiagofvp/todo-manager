@@ -98,7 +98,7 @@ func main() {
 		}
 
 		if err := todoList.Delete(num - 1); err != nil {
-			fmt.Fprintln(os.Stderr, "Error deleting todo:", err)
+			fmt.Println(os.Stderr, "Error deleting todo:", err)
 			os.Exit(1)
 		}
 		saveTodos(todoList)
