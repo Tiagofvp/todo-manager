@@ -87,6 +87,27 @@ func main() {
 
 		fmt.Println("Marked item as completed")
 
+	case "unmark":
+		if len(args) < 2 {
+			fmt.Println("Error: missing item number")
+			os.Exit(1)
+		}
+
+		num, err := strconv.Atoi(args[1])
+		if err != nil {
+			fmt.Println("Error: invalid item number:", args[1])
+			os.Exit(1)
+		}
+
+		if err := todoList.Unmark(num - 1); err != nil {
+			fmt.Fprintln(os.Stderr, "Error completing todo:", err)
+			os.Exit(1)
+		}
+
+		saveTodos(todoList)
+
+		fmt.Println("Marked item as completed")
+
 	case "delete":
 		if len(args) < 2 {
 			fmt.Println("Error: missing item number")
@@ -190,6 +211,22 @@ func runInteractive(list *todo.List) {
 			case "list":
 				fmt.Println(list)
 			case "complete":
+				if len(parts) < 2 {
+					fmt.Println("Error: missing item number")
+					continue
+				}
+				num, err := strconv.Atoi(parts[1])
+				if err != nil {
+					fmt.Println("Error: invalid item number")
+					continue
+				}
+				if err := list.Complete(num - 1); err != nil {
+					fmt.Println("Error:", err)
+					continue
+				}
+				saveTodos(list)
+				fmt.Println("Marked item as completed")
+			case "unmark":
 				if len(parts) < 2 {
 					fmt.Println("Error: missing item number")
 					continue

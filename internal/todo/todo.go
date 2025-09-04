@@ -43,6 +43,15 @@ func (list *List) Complete(index int) error {
 	return nil
 }
 
+func (list *List) Unmark(index int) error {
+	if index < 0 || index >= len(list.Items) {
+		return errors.New("item index out of range")
+	}
+	list.Items[index].Done = false
+
+	return nil
+}
+
 func (list *List) Delete(index int) error {
 	if index < 0 || index >= len(list.Items) {
 		return errors.New("item index out of range")
