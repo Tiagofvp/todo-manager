@@ -29,30 +29,30 @@ func NewList() *List {
 	}
 }
 
-func (l *List) Add(text string) {
+func (list *List) Add(text string) {
 	item := NewItem(text)
-	l.Items = append(l.Items, item)
+	list.Items = append(list.Items, item)
 }
 
-func (l *List) Complete(index int) error {
-	if index < 0 || index >= len(l.Items) {
+func (list *List) Complete(index int) error {
+	if index < 0 || index >= len(list.Items) {
 		return errors.New("item index out of range")
 	}
-	l.Items[index].Done = true
+	list.Items[index].Done = true
 
 	return nil
 }
 
-func (l *List) Delete(index int) error {
-	if index < 0 || index >= len(l.Items) {
+func (list *List) Delete(index int) error {
+	if index < 0 || index >= len(list.Items) {
 		return errors.New("item index out of range")
 	}
-	l.Items = append(l.Items[:index], l.Items[index+1:]...)
+	list.Items = append(list.Items[:index], list.Items[index+1:]...)
 	return nil
 }
 
-func (l *List) Save(filename string) error {
-	data, err := json.Marshal(l)
+func (list *List) Save(filename string) error {
+	data, err := json.Marshal(list)
 	if err != nil {
 		return err
 	}
@@ -60,23 +60,23 @@ func (l *List) Save(filename string) error {
 	return os.WriteFile(filename, data, 0644)
 }
 
-func (l *List) Load(filename string) error {
+func (list *List) Load(filename string) error {
 	data, err := os.ReadFile(filename)
 	if err != nil {
 		return err
 	}
 
-	return json.Unmarshal(data, l)
+	return json.Unmarshal(data, list)
 }
 
 // String returns a formatted string representation of the list
-func (l *List) String() string {
-	if len(l.Items) == 0 {
+func (list *List) String() string {
+	if len(list.Items) == 0 {
 		return "No items in the todo list"
 	}
 
 	result := "Todo List:\n"
-	for i, item := range l.Items {
+	for i, item := range list.Items {
 		status := " "
 		if item.Done {
 			status = "✓"
