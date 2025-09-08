@@ -26,7 +26,29 @@ A lightweight, fast command-line task manager written in Go for efficient to-do 
 
 ---
 
-###  Method 1: Install via Go (Recommended)
+###  Method 1: Manual Installation (Recommended)
+```bash
+go install github.com/Tiagofvp/todo-manager@latest
+```
+
+Go into the Project Folder
+```bash
+cd path/to/project/to-do-app
+```
+
+Build an executable or use the already generated one
+```bash
+go build -o todo-manager ./cmd/todo
+```
+
+Move to a directory in your PATH:
+#### Verify Go Binary Path
+```bash
+sudo mv todo-manager /usr/local/bin/
+
+
+```
+###  Method 2: Install via Go
 ```bash
 go install github.com/Tiagofvp/todo-manager@latest
 ```
@@ -45,24 +67,3 @@ If not in PATH, add this to your shell config (.bashrc, .zshrc, etc.):
 export PATH="$PATH:$(go env GOPATH)/bin"
 ```
 ---
-
-###  Method 2: Manual Installation
-```bash
-go install github.com/Tiagofvp/todo-manager@latest
-```
-
-Go into the Project Folder
-```bash
-cd path/to/project/to-do-app
-```
-
-Build an executable or use the already generated one
-```bash
-go build -o todo ./cmd/todo
-```
-
-Move to a directory in your PATH:
-#### Verify Go Binary Path
-```bash
-sudo mv todo-manager /usr/local/bin/<
-```
