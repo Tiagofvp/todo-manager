@@ -50,6 +50,12 @@ export PATH="$PATH:$(go env GOPATH)/bin"
 ```bash
 go install github.com/Tiagofvp/todo-manager@latest
 ```
+
+Go into the Project Folder
+```bash
+cd path/to/project/to-do-app
+```
+
 Build an executable or use the already generated one
 ```bash
 go build -o todo ./cmd/todo
@@ -58,5 +64,5 @@ go build -o todo ./cmd/todo
 Move to a directory in your PATH:
 #### Verify Go Binary Path
 ```bash
-mv todo-manager /usr/local/bin/<
+sudo mv todo-manager /usr/local/bin/<
 ```
