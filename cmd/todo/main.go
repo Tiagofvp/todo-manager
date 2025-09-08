@@ -106,7 +106,7 @@ func main() {
 
 		saveTodos(todoList)
 
-		fmt.Println("Marked item as completed")
+		fmt.Println("Marked item as uncompleted")
 
 	case "delete":
 		if len(args) < 2 {
@@ -153,6 +153,7 @@ Commands:
   add <text>     	Add a new todo item
   list           	List all todo items
   complete <number>   	Mark item n as completed
+  unmark <number>    	Unmark item n as uncompleted
   delete <number>	Delete an item 
   help           	Show this help message
 
@@ -183,6 +184,7 @@ func runInteractive(list *todo.List) {
 		fmt.Println("  list 				- List all items")
 		fmt.Println("  add [text]			- Add an item")
 		fmt.Println("  complete [number]		- Set an item to completed")
+		fmt.Println("  unmark [number]		- Set an item to uncompleted")
 		fmt.Println("  delete [number]		- Delete an item")
 		fmt.Println("  help				- Show this help message")
 		fmt.Println("  quit/exit			- Exit interactive mode")
@@ -236,12 +238,12 @@ func runInteractive(list *todo.List) {
 					fmt.Println("Error: invalid item number")
 					continue
 				}
-				if err := list.Complete(num - 1); err != nil {
+				if err := list.Unmark(num - 1); err != nil {
 					fmt.Println("Error:", err)
 					continue
 				}
 				saveTodos(list)
-				fmt.Println("Marked item as completed")
+				fmt.Println("Marked item as uncompleted")
 			case "delete":
 				if len(parts) < 2 {
 					fmt.Println("Error: missing item number")
