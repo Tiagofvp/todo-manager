@@ -4,10 +4,10 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
+	"github.com/Tiagofvp/todo-manager/internal/todo"
 	"os"
 	"strconv"
 	"strings"
-	"to-do-app/internal/todo"
 )
 
 const (
