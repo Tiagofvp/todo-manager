@@ -8,13 +8,11 @@ import (
 )
 
 func main() {
-	// Pfad zum Go-Bin-Verzeichnis
 	gobin := os.Getenv("GOBIN")
 	if gobin == "" {
 		gobin = filepath.Join(os.Getenv("HOME"), "go", "bin")
 	}
 
-	// Prüfen, ob todo existiert
 	todoPath := filepath.Join(gobin, "todo")
 	if _, err := os.Stat(todoPath); err == nil {
 		fmt.Printf("✅ Todo-Manager CLI gefunden: %s\n", todoPath)
@@ -24,7 +22,6 @@ func main() {
 		return
 	}
 
-	// Prüfen, ob gobin im PATH ist
 	path := os.Getenv("PATH")
 	if !containsPath(path, gobin) {
 		fmt.Printf("⚠️ Achtung: %s ist nicht im PATH!\n", gobin)
@@ -34,7 +31,6 @@ func main() {
 		fmt.Println("✅ PATH korrekt gesetzt, du kannst 'todo' direkt nutzen.")
 	}
 
-	// Optional: Testlauf von 'todo list'
 	fmt.Println("\n==> Testlauf: todo list")
 	cmd := exec.Command("todo", "list")
 	cmd.Stdout = os.Stdout
