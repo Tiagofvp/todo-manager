@@ -1,3 +1,3 @@
-module to-do-app
+module todo-manager
 
 go 1.22
